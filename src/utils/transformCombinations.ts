@@ -33,6 +33,14 @@ export function transformCombinations(originalCombinations: Entities[]): Entitie
         const currentCombination: Entities = combinations.length
           ? combinations.pop()!
           : {};
+
+        for (const [t, e] of Object.entries(entities)) {
+          if (!usedSearchWords.has(e.searchWord) && usedSearchWords.size > 1 && e.searchWord !== entity.searchWord) {
+            // @ts-ignore
+            currentCombination[t] = { id: e.id, name: e.name };
+          }
+        }
+
         // @ts-ignore
         currentCombination[type] = { id, name };
         combinations.push(currentCombination);
