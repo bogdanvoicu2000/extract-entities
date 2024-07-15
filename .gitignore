@@ -1,0 +1,12 @@
+# dependencies
+/node_modules
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# intellij
+.idea
+/modules/Dev.json
