@@ -64,3 +64,4 @@ For the search term `McDonald’s in London or Manchester`, the output will be:
     brand: { id: 4, name: "McDonald's" }
   }
 ]
+```
