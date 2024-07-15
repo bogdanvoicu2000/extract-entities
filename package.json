@@ -7,13 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Bogdan Voicu",
   "dependencies": {
     "@types/node": "^20.14.10",
     "csv-parser": "^3.0.0",
     "pg": "^8.12.0",
-    "pg-migrate": "^2.0.1",
     "pg-promise": "^11.9.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
