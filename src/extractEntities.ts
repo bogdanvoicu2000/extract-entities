@@ -1,6 +1,7 @@
 import { Entities, Entity } from './types/entities';
 import db from './config/db';
-import { sanitizeSearchTerm, transformCombinations } from './utils/misc';
+import { sanitizeSearchTerm } from './utils/misc';
+import { transformCombinations } from './utils/transformCombinations';
 
 
 export async function extractEntities(searchTerm: string): Promise<Entities[]> {
@@ -9,7 +10,6 @@ export async function extractEntities(searchTerm: string): Promise<Entities[]> {
 
   // Split the search term into individual words for full-text search
   const searchWords = sanitizedSearchTerm.split(/\s+/).map(word => `${word}:*`);
-  const searchQuery = searchWords.join(' | ');
 
   // Organize the results into entities
   const foundEntities: { [key: string]: Entity[] } = {
@@ -20,7 +20,7 @@ export async function extractEntities(searchTerm: string): Promise<Entities[]> {
   };
 
   for (const word of searchWords) {
-    // Single SQL query to search for entities
+    // Single SQL query to search for each word in searchTerm
     const query = `SELECT 'city' as type, id, name
                    FROM cities
                    WHERE to_tsvector('english', name) @@ to_tsquery($1)
@@ -43,7 +43,6 @@ export async function extractEntities(searchTerm: string): Promise<Entities[]> {
       foundEntities[row.type].push({ id: row.id, name: row.name, searchWord: word });
     }
   }
-
 
   // Generate all possible combinations of the entities
   const combinations: Entities[] = [];
