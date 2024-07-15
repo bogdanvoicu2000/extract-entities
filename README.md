@@ -13,7 +13,7 @@ term.
 
 1. **Clone the repository:**
     ```bash
-    git clone [https://github.com/yourusername/entity-extractor.git](https://github.com/bogdanvoicu2000/extract-entities.git)
+    git clone https://github.com/bogdanvoicu2000/extract-entities.git
     cd extract-entities
     ```
 
