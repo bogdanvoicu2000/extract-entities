@@ -1,16 +1,16 @@
-import { Entities, Entity } from '../types/entities';
+import { Entities, EntityEnum } from '../types/entities';
 
 // Function that iterates through each entity type (city, brand, dishType, diet)
 // and creates combinations based on whether they share the same searchWord.
 export function transformCombinations(originalCombinations: Entities[]): Entities[] {
   const transformedCombinations: Entities[] = [];
 
-  for (const combination of originalCombinations) {
-    const entities: { [key: string]: Entity } = {
-      ...(combination.city && { city: combination.city }),
-      ...(combination.brand && { brand: combination.brand }),
-      ...(combination.dishType && { dishType: combination.dishType }),
-      ...(combination.diet && { diet: combination.diet }),
+  for (const { city, dishType, brand, diet } of originalCombinations) {
+    const entities: Entities = {
+      ...(city && { city }),
+      ...(brand && { brand }),
+      ...(dishType && { dishType }),
+      ...(diet && { diet }),
     };
 
     const usedSearchWords: Set<string> = new Set();
@@ -19,30 +19,27 @@ export function transformCombinations(originalCombinations: Entities[]): Entitie
 
     for (const [type, entity] of Object.entries(entities)) {
       const { id, name } = entity;
-      if (usedSearchWords.has(entity.searchWord)) {
+      if (usedSearchWords.has(entity.searchWord!)) {
         const newEntity: Entities = {};
         for (const [t, e] of Object.entries(entities)) {
           if (entity.searchWord !== e.searchWord) {
-            // @ts-ignore
-            newEntity[t] = { id: e.id, name: e.name };
+            newEntity[t as EntityEnum] = { id: e.id, name: e.name };
           }
         }
         combinations.push({ [type]: { id, name }, ...newEntity });
       } else {
-        usedSearchWords.add(entity.searchWord);
+        usedSearchWords.add(entity.searchWord!);
         const currentCombination: Entities = combinations.length
           ? combinations.pop()!
           : {};
 
         for (const [t, e] of Object.entries(entities)) {
-          if (!usedSearchWords.has(e.searchWord) && usedSearchWords.size > 1 && e.searchWord !== entity.searchWord) {
-            // @ts-ignore
-            currentCombination[t] = { id: e.id, name: e.name };
+          if (!usedSearchWords.has(e.searchWord!) && usedSearchWords.size > 1 && e.searchWord !== entity.searchWord) {
+            currentCombination[t as EntityEnum] = { id: e.id, name: e.name };
           }
         }
 
-        // @ts-ignore
-        currentCombination[type] = { id, name };
+        currentCombination[type as EntityEnum] = { id, name };
         combinations.push(currentCombination);
       }
     }

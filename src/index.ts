@@ -1,4 +1,3 @@
-// import { extractEntities } from './extractEntities';
 import { extractEntities } from './extractEntities';
 
 const args = process.argv;
